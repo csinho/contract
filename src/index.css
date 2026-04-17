@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #contract-print,
+  #contract-print * {
+    visibility: visible;
+  }
+  #contract-print {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 210mm;
+    margin: 0;
+    padding: 18mm 20mm;
+    box-shadow: none;
+  }
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
