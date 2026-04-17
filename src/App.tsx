@@ -6,7 +6,13 @@ import { ContractData, emptyContractData } from './types/contract';
 
 const PREVIEW_PAD = 24;
 
-function LiveContractPreview({ data }: { data: ContractData }) {
+function ScaledContractPreview({
+  data,
+  viewportHeight,
+}: {
+  data: ContractData;
+  viewportHeight: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [layout, setLayout] = useState({ scale: 0.35, w: 794, h: 1123 });
@@ -48,7 +54,7 @@ function LiveContractPreview({ data }: { data: ContractData }) {
     <div
       ref={containerRef}
       className="w-full overflow-hidden bg-gray-100 flex items-center justify-center p-3"
-      style={{ height: 'min(72vh, 1200px)' }}
+      style={{ height: viewportHeight }}
     >
       <div
         className="rounded-sm shadow-md ring-1 ring-black/5 bg-white"
@@ -117,21 +123,21 @@ export default function App() {
               </div>
               <span className="text-xs text-gray-400">Ao vivo</span>
             </div>
-            <LiveContractPreview data={data} />
+            <ScaledContractPreview data={data} viewportHeight="min(72vh, 1200px)" />
           </div>
         </div>
       </main>
 
       {showPreview && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl flex flex-col w-full max-w-4xl max-h-[95vh]">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-0 sm:p-4">
+          <div className="bg-white sm:rounded-2xl shadow-2xl flex flex-col w-full h-[100dvh] sm:h-auto sm:max-w-4xl sm:max-h-[95vh]">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-4 border-b border-gray-100">
               <h2 className="font-bold text-gray-800">Contrato Gerado</h2>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={handleExportPdf}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="flex-1 sm:flex-none px-4 sm:px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
                 >
                   Baixar PDF
                 </button>
@@ -143,10 +149,11 @@ export default function App() {
                 </button>
               </div>
             </div>
-            <div className="overflow-auto flex-1 bg-gray-100 p-6 flex justify-center">
-              <div className="shadow-xl">
-                <ContractPreview data={data} />
-              </div>
+            <div className="overflow-hidden flex-1 bg-gray-100">
+              <ScaledContractPreview
+                data={data}
+                viewportHeight="calc(100dvh - 108px)"
+              />
             </div>
           </div>
         </div>
